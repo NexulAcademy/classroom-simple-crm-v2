@@ -7,5 +7,6 @@ export interface Customer {
   phoneNumber: string;
   emailAddress: string;
   preferredContactMethod: InteractionMethod;
+  statusCode: string;
   lastContactDate: string; // ISO format date
 }
