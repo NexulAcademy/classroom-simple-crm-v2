@@ -5,6 +5,8 @@ import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerListPageComponent } from './customer-list-page/customer-list-page.component';
 import { SharedImportsModule } from '../shared/shared-imports.module';
 import { HttpClientModule } from '@angular/common/http';
+import { CustomerService } from './customer.service';
+import { CustomerMockService } from './customer-mock.service';
 
 
 @NgModule({
@@ -14,6 +16,12 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     CustomerRoutingModule,
     SharedImportsModule
+  ],
+  providers: [
+    {
+      provide: CustomerService,
+      useClass: CustomerMockService
+    }
   ]
 })
 export class CustomerModule { }

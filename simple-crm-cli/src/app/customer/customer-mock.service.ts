@@ -9,8 +9,9 @@ export class CustomerMockService extends CustomerService {
   customers: Customer[] = [];
   lastCustomerId: number;
 
-  constructor(http: HttpClient) {
+  constructor(public http: HttpClient) {
     super(http);
+    console.warn('Warning: You are using the CustomerMockService, not intended for production use.');
 
     const localCustomers = localStorage.getItem('customers');
     if (localCustomers) {
