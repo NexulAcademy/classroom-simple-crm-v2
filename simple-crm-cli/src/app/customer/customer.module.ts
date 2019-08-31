@@ -9,6 +9,7 @@ import { CustomerService } from './customer.service';
 import { CustomerMockService } from './customer-mock.service';
 import { environment } from 'src/environments/environment';
 import { CustomerCreateDialogComponent } from './customer-create-dialog/customer-create-dialog.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { CustomerCreateDialogComponent } from './customer-create-dialog/customer
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     HttpClientModule,
     CustomerRoutingModule,
     SharedImportsModule
