@@ -7,6 +7,7 @@ import { SharedImportsModule } from '../shared/shared-imports.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomerService } from './customer.service';
 import { CustomerMockService } from './customer-mock.service';
+import { environment } from 'src/environments/environment';
 
 
 @NgModule({
@@ -20,7 +21,7 @@ import { CustomerMockService } from './customer-mock.service';
   providers: [
     {
       provide: CustomerService,
-      useClass: CustomerMockService
+      useClass: environment.production ? CustomerService : CustomerMockService
     }
   ]
 })
