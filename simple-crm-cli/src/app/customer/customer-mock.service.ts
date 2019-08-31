@@ -30,6 +30,13 @@ export class CustomerMockService extends CustomerService {
     }
     this.lastCustomerId = Math.max(...this.customers.map(x => x.customerId));
   }
+
+  get(customerId: number) {
+    const item = this.customers.find(x =>
+      x.customerId === customerId);
+    return of(item);
+  }
+
   search(term: string): Observable<Customer[]> {
     const items = this.customers.filter(x =>
       (x.firstName + ' ' + x.lastName).indexOf(term) >= 0
