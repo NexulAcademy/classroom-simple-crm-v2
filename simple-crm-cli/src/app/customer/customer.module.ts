@@ -8,10 +8,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { CustomerService } from './customer.service';
 import { CustomerMockService } from './customer-mock.service';
 import { environment } from 'src/environments/environment';
+import { CustomerCreateDialogComponent } from './customer-create-dialog/customer-create-dialog.component';
 
 
 @NgModule({
-  declarations: [CustomerListPageComponent],
+  declarations: [
+    CustomerListPageComponent,
+    CustomerCreateDialogComponent
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -23,6 +27,9 @@ import { environment } from 'src/environments/environment';
       provide: CustomerService,
       useClass: environment.production ? CustomerService : CustomerMockService
     }
+  ],
+  entryComponents: [
+    CustomerCreateDialogComponent
   ]
 })
 export class CustomerModule { }
