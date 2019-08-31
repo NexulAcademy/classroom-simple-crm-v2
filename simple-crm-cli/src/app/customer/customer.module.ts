@@ -10,12 +10,14 @@ import { CustomerMockService } from './customer-mock.service';
 import { environment } from 'src/environments/environment';
 import { CustomerCreateDialogComponent } from './customer-create-dialog/customer-create-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 
 
 @NgModule({
   declarations: [
     CustomerListPageComponent,
-    CustomerCreateDialogComponent
+    CustomerCreateDialogComponent,
+    CustomerDetailComponent
   ],
   imports: [
     CommonModule,

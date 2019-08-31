@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CustomerListPageComponent } from './customer-list-page/customer-list-page.component';
+import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 
 
 const routes: Routes = [
@@ -8,6 +9,11 @@ const routes: Routes = [
     path: 'customers',
     pathMatch: 'full',
     component: CustomerListPageComponent
+  },
+  {
+    path: 'customer/:id',
+    pathMatch: 'full',
+    component: CustomerDetailComponent
   }
 ];
 
