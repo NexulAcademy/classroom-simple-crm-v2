@@ -1,12 +1,18 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { SharedImportsModule } from './shared/shared-imports.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('AppComponent', () => {
+fdescribe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        BrowserModule,
+        BrowserAnimationsModule,
+        RouterTestingModule,
+        SharedImportsModule
       ],
       declarations: [
         AppComponent
@@ -26,10 +32,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('simple-crm-cli');
   });
 
-  it('should render title', () => {
+  it('should render title in the toolbar', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('simple-crm-cli app is running!');
+    expect(compiled.querySelector('.mat-toolbar').textContent).toContain('Simple CRM');
   });
 });
