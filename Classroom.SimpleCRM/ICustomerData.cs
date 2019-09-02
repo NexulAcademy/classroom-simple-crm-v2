@@ -1,4 +1,6 @@
-﻿namespace Classroom.SimpleCRM
+﻿using System.Collections.Generic;
+
+namespace Classroom.SimpleCRM
 {
     public interface ICustomerData
     {
@@ -18,6 +20,11 @@
         /// </summary>
         /// <param name="item"></param>
         void Update(Customer item);
+        /// <summary>
+        /// Marks an item as deleted, to be saved on next commit.
+        /// </summary>
+        /// <param name="item"></param>
+        void Delete(Customer item);
         /// <summary>
         /// Saves changes to new or modified customers.
         /// </summary>
