@@ -43,19 +43,28 @@ namespace Classroom.SimpleCRM.WebApi.ApiControllers
             return Ok(model);
         }
         [HttpPost("")] //  ./api/customers
-        public IActionResult Create([FromBody]Customer model)
+        public IActionResult Create([FromBody]CustomerCreateViewModel model)
         {
             if (model == null)
             {
                 return BadRequest();
             }
 
-            _customerData.Add(model);
+            var customer = new Customer
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                EmailAddress = model.EmailAddress,
+                PhoneNumber = model.PhoneNumber,
+                PreferredContactMethod = model.PreferredContactMethod
+            };
+
+            _customerData.Add(customer);
             _customerData.Commit();
-            return Ok(model); //includes new auto-assigned id
+            return Ok(new CustomerDisplayViewModel(customer)); //includes new auto-assigned id
         }
         [HttpPut("{id}")] //  ./api/customers/:id
-        public IActionResult Update(int id, [FromBody]Customer model)
+        public IActionResult Update(int id, [FromBody]CustomerUpdateViewModel model)
         {
             if (model == null)
             {
@@ -74,8 +83,6 @@ namespace Classroom.SimpleCRM.WebApi.ApiControllers
             customer.LastName = model.LastName;
             customer.PhoneNumber = model.PhoneNumber;
             customer.PreferredContactMethod = model.PreferredContactMethod;
-            customer.Status = model.Status;
-            //customer.LastContactDate = model.LastContactDate;
 
             _customerData.Update(customer);
             _customerData.Commit();
