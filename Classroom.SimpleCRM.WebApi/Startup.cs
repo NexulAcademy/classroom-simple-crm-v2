@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Classroom.SimpleCRM.WebApi.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Classroom.SimpleCRM.SqlDbServices;
 
 namespace Classroom.SimpleCRM.WebApi
 {
@@ -38,6 +39,9 @@ namespace Classroom.SimpleCRM.WebApi
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<CrmDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<ICustomerData, SqlCustomerData>();
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
