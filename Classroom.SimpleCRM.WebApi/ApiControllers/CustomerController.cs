@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Classroom.SimpleCRM.WebApi.Filters;
 using Classroom.SimpleCRM.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +21,17 @@ namespace Classroom.SimpleCRM.WebApi.ApiControllers
         /// <returns></returns>
         [Route("")] //  ./api/customers
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery]int page = 1, [FromQuery]int take = 50)
         {
-            var customers = _customerData.GetAll(0, 0, 50, "");
+            page = Math.Max(1, page); //correct bad value automatically.
+            //or
+            if (take > 250)
+            {   //tell the consumer the requested query cannot be fulfilled.
+                return new ValidationFailedResult("A request can only take maximum of 250 items.");
+            }
+
+            var customers = _customerData.GetAll(0, page - 1, take, "");
+
             var models = customers.Select(c => new CustomerDisplayViewModel(c));
             return Ok(models);
         }
