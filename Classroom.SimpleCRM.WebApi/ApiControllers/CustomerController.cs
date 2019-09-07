@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Classroom.SimpleCRM.WebApi.Filters;
 using Classroom.SimpleCRM.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,6 +50,10 @@ namespace Classroom.SimpleCRM.WebApi.ApiControllers
             {
                 return BadRequest();
             }
+            if (!ModelState.IsValid)
+            {   //rules failed, return a well formed error
+                return new ValidationFailedResult(ModelState);
+            }
 
             var customer = new Customer
             {
@@ -69,6 +74,10 @@ namespace Classroom.SimpleCRM.WebApi.ApiControllers
             if (model == null)
             {
                 return BadRequest();
+            }
+            if (!ModelState.IsValid)
+            {   //rules failed, return a well formed error
+                return new ValidationFailedResult(ModelState);
             }
 
             var customer = _customerData.Get(id);
