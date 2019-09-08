@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Classroom.SimpleCRM.SqlDbServices;
-using Classroom.SimpleCRM.WebApi.Data;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 
 namespace Classroom.SimpleCRM.WebApi
@@ -40,9 +39,12 @@ namespace Classroom.SimpleCRM.WebApi
             });
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<CrmIdentityDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<CrmIdentityUser>()
+                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddEntityFrameworkStores<CrmIdentityDbContext>();
             services.AddDbContext<CrmDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<ICustomerData, SqlCustomerData>();
@@ -52,10 +54,6 @@ namespace Classroom.SimpleCRM.WebApi
                 var context = factory.GetService<IActionContextAccessor>().ActionContext;
                 return new UrlHelper(context);
             });
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,6 +80,9 @@ namespace Classroom.SimpleCRM.WebApi
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "identity",
+                    template: "Identity/{controller=Account}/{action=Register}/{id?}");
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
