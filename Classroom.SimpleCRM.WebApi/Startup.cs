@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Classroom.SimpleCRM.SqlDbServices;
 using Classroom.SimpleCRM.WebApi.Data;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 
 namespace Classroom.SimpleCRM.WebApi
 {
@@ -31,6 +32,11 @@ namespace Classroom.SimpleCRM.WebApi
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddSpaStaticFiles(config =>
+            {
+                config.RootPath = Configuration["SpaRoot"];
             });
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -69,6 +75,7 @@ namespace Classroom.SimpleCRM.WebApi
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSpaStaticFiles();
             app.UseCookiePolicy();
 
             app.UseAuthentication();
@@ -79,6 +86,17 @@ namespace Classroom.SimpleCRM.WebApi
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseWhen(
+                context => !context.Request.Path.StartsWithSegments("/api"),
+                appBuilder => appBuilder.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "../simple-crm-cli";
+                    if (env.IsDevelopment())
+                    {
+                        spa.UseAngularCliServer(npmScript: "start");
+                    }
+                }));
         }
     }
 }
