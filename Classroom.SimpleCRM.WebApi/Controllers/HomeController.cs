@@ -19,6 +19,18 @@ namespace Classroom.SimpleCRM.WebApi.Controllers
             return View();
         }
 
+        [Route("corporate")]
+        public IActionResult CorporateClients()
+        {
+            return View();
+        }
+
+        [Route("pricing")]
+        public IActionResult Pricing()
+        {
+            return View();
+        }
+
         [Route("error")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
