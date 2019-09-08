@@ -29,9 +29,14 @@ namespace Classroom.SimpleCRM.WebApi.ApiControllers
         {
             if (resourceParameters.Page < 1)
             {
-                return new ValidationFailedResult("Page must be 1 or greater.");
+                resourceParameters.Page = 1; //0 is default when not specified
             }
-            if (resourceParameters.Take > 250)
+
+            if (resourceParameters.Take == 0)
+            {
+                resourceParameters.Take = 50; //default when value is not specified.
+            }
+            else if (resourceParameters.Take > 250)
             {
                 return new ValidationFailedResult("A request can only take maximum of 250 items.");
             }
@@ -58,6 +63,8 @@ namespace Classroom.SimpleCRM.WebApi.ApiControllers
                     take = resourceParameters.Take,
                     page = resourceParameters.Page + pageAdjust,
                     orderBy = resourceParameters.OrderBy,
+                    lastName = resourceParameters.LastName,
+                    term = resourceParameters.Term
                 });
         }
 
