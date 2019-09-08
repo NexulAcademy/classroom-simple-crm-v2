@@ -14,11 +14,9 @@ namespace Classroom.SimpleCRM
         /// Gets paged records for a given CRM account and status.
         /// </summary>
         /// <param name="accountId">The CRM account id.</param>
-        /// <param name="pageIndex">The zero based page number</param>
-        /// <param name="take">The max number of records to take (page size)</param>
-        /// <param name="orderBy">The property name to order by and optional direction. (null for default order)</param>
+        /// <param name="options">paging and filtering options.</param>
         /// <returns></returns>
-        List<Customer> GetAll(int accountId, int pageIndex, int take, string orderBy);
+        List<Customer> Get(int accountId, CustomerListParameters options);
         /// <summary>
         /// Adds a new item, to be saved on next commit.
         /// </summary>
