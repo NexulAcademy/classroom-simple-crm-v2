@@ -81,3 +81,4 @@ bin/
 *.vspscc
 .builds
 *.dotCover
+/Classroom.SimpleCRM.WebApi/node_modules
