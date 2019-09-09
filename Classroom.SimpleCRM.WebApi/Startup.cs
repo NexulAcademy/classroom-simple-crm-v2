@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Classroom.SimpleCRM.SqlDbServices;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Classroom.SimpleCRM.WebApi.Auth;
 
 namespace Classroom.SimpleCRM.WebApi
 {
@@ -33,11 +34,26 @@ namespace Classroom.SimpleCRM.WebApi
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            var googleOptions = Configuration.GetSection(nameof(GoogleAuthSettings));
+            services.Configure<GoogleAuthSettings>(options =>
+            {
+                options.ClientId = googleOptions[nameof(GoogleAuthSettings.ClientId)];
+                options.ClientSecret = googleOptions[nameof(GoogleAuthSettings.ClientSecret)];
+            });
+
             services.AddSpaStaticFiles(config =>
             {
                 config.RootPath = Configuration["SpaRoot"];
             });
-            
+
+            services.AddAuthentication()
+                .AddCookie(cfg => cfg.SlidingExpiration = true)
+                .AddGoogle(options =>
+                {
+                    options.ClientId = googleOptions[nameof(GoogleAuthSettings.ClientId)];
+                    options.ClientSecret = googleOptions[nameof(GoogleAuthSettings.ClientSecret)];
+                });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<CrmIdentityDbContext>(options =>
                 options.UseSqlServer(
