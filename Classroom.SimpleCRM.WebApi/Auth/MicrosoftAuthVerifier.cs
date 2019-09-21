@@ -27,16 +27,18 @@ namespace Classroom.SimpleCRM.WebApi.Auth
                 var client = new HttpClient();
 
                 var tokenRequestParameters = new Dictionary<string, string>()
-            {
-                { "client_id", _microsoftAuthSettings.ClientId },
-                { "client_secret", _microsoftAuthSettings.ClientSecret },
-                { "redirect_uri", _host + "signin-microsoft" },
-                { "code", token },
-                { "grant_type", "authorization_code" }
-            };
+                {
+                    { "client_id", _microsoftAuthSettings.ClientId },
+                    { "client_secret", _microsoftAuthSettings.ClientSecret },
+                    { "redirect_uri", _host + "signin-microsoft" },
+                    { "code", token },
+                    { "grant_type", "authorization_code" }
+                };
                 var requestContent = new FormUrlEncodedContent(tokenRequestParameters);
-                var requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://login.microsoftonline.com/common/oauth2/v2.0/token");
-                requestMessage.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, 
+                    "https://login.microsoftonline.com/common/oauth2/v2.0/token");
+                requestMessage.Headers.Accept.Add(
+                    new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 requestMessage.Content = requestContent;
                 var response = await client.SendAsync(requestMessage);
                 var payloadStr = await response.Content.ReadAsStringAsync();
@@ -62,12 +64,13 @@ namespace Classroom.SimpleCRM.WebApi.Auth
                 _logger.LogInformation("Payload details: {0}", payloadStr);
 
 
-                var graphMessage = new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/v1.0/me");
+                var graphMessage = new HttpRequestMessage(HttpMethod.Get, 
+                    "https://graph.microsoft.com/v1.0/me");
                 graphMessage.Headers.Add("Authorization", "Bearer " + payload["access_token"]);
                 var graphResponse = await client.SendAsync(graphMessage);
                 var graphPayloadStr = await graphResponse.Content.ReadAsStringAsync();
                 var graphPayload = JObject.Parse(graphPayloadStr);
-                //{"@odata.context":"https://graph.microsoft.com/v1.0/$metadata#users/$entity","id":"ea0...070","businessPhones":[],"displayName":"Michael Lang","givenName":"Michael","jobTitle":null,"mail":"michael.lang@eagletg.com","mobilePhone":null,"officeLocation":null,"preferredLanguage":null,"surname":"Lang","userPrincipalName":"michael.lang@eagletg.com"}
+                //{"@odata.context":"https://graph.microsoft.com/v1.0/$metadata#users/$entity","id":"ea0...070","businessPhones":[],"displayName":"Michael Lang","givenName":"Michael","jobTitle":null,"mail":"michael.lang@nexulacademy.com","mobilePhone":null,"officeLocation":null,"preferredLanguage":null,"surname":"Lang","userPrincipalName":"michael.lang@nexulacademy.com"}
 
                 if (graphPayload["error"] != null)
                 {   // malformed request or bad data
