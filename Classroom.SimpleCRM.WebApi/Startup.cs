@@ -92,7 +92,7 @@ namespace Classroom.SimpleCRM.WebApi
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ApiPolicy", policy => policy.RequireClaim(
+                options.AddPolicy("ApiUser", policy => policy.RequireClaim(
                     Constants.JwtClaimIdentifiers.Rol,
                     Constants.JwtClaims.ApiAccess));
             });
@@ -102,11 +102,11 @@ namespace Classroom.SimpleCRM.WebApi
             });
             identityBuilder = new IdentityBuilder(
                 identityBuilder.UserType, 
-                typeof(IdentityRole), 
+                typeof(IdentityRole<Guid>), 
                 identityBuilder.Services);
             identityBuilder.AddEntityFrameworkStores<CrmIdentityDbContext>();
             identityBuilder.AddRoleValidator<RoleValidator<IdentityRole>>();
-            identityBuilder.AddRoleManager<RoleManager<IdentityRole>>();
+            identityBuilder.AddRoleManager<RoleManager<IdentityRole<Guid>>>();
             identityBuilder.AddSignInManager<SignInManager<CrmIdentityUser>>();
             identityBuilder.AddDefaultTokenProviders();
 
