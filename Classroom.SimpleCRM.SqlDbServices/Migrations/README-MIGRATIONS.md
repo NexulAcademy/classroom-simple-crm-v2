@@ -8,5 +8,9 @@
 #Apply Migrations
 
 ...\Classroom.SimpleCRM.SqlDbServices>dotnet ef database update -c CrmDbContext
+Applying migration '20190907170412_InitialCrm'.
+Done.
 
 ...\Classroom.SimpleCRM.SqlDbServices>dotnet ef database update -c CrmIdentityDbContext
+Applying migration '20190908222810_InitialIdentity'.
+Done.

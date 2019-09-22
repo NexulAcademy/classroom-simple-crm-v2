@@ -9,7 +9,7 @@ namespace Classroom.SimpleCRM.SqlDbServices
         public CrmDbContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<CrmDbContext>();
-            builder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=SimpleCrm;Trusted_Connection=True;MultipleActiveResultSets=true",
+            builder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=SimpleCrm2;Trusted_Connection=True;MultipleActiveResultSets=true",
                 optionsBuilder => optionsBuilder.MigrationsAssembly(typeof(CrmDbContext).GetTypeInfo().Assembly.GetName().Name));
             return new CrmDbContext(builder.Options);
         }
