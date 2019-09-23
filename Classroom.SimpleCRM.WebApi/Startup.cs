@@ -133,6 +133,8 @@ namespace Classroom.SimpleCRM.WebApi
                     new OperationSecurityScopeProcessor("JWT token"));
             });
 
+            services.AddResponseCaching();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<CrmIdentityDbContext>(options =>
                 options.UseSqlServer(
@@ -166,6 +168,8 @@ namespace Classroom.SimpleCRM.WebApi
             }
 
             app.UseHttpsRedirection();
+            app.UseResponseCaching();
+
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseCookiePolicy();
@@ -183,7 +187,7 @@ namespace Classroom.SimpleCRM.WebApi
                     Realm = "Nexul Academy"
                 };
             });
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
