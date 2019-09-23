@@ -22,6 +22,7 @@ using NSwag.AspNetCore;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Classroom.SimpleCRM.WebApi.Filters;
 
 namespace Classroom.SimpleCRM.WebApi
 {
@@ -138,18 +139,21 @@ namespace Classroom.SimpleCRM.WebApi
 
             services.AddResponseCaching();
 
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddJsonOptions(options =>
+            services.AddMvc(o =>
+            {
+                o.Filters.Add(typeof(GlobalExceptionFilter));
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            .AddJsonOptions(options =>
+            {
+                var settings = options.SerializerSettings;
+                settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                settings.Converters = new JsonConverter[]
                 {
-                    var settings = options.SerializerSettings;
-                    settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                    settings.Converters = new JsonConverter[]
-                    {
-                        new IsoDateTimeConverter(),
-                        new StringEnumConverter(true)
-                    };
-                }); ;
+                    new IsoDateTimeConverter(),
+                    new StringEnumConverter(true)
+                };
+            }); ;
             services.AddDbContext<CrmIdentityDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
