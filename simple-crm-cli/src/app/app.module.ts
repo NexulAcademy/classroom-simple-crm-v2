@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { SharedImportsModule } from './shared/shared-imports.module';
 import { CustomerModule } from './customer/customer.module';
 import { AppIconsService } from './shared/app-icons.service';
+import { AccountModule } from './account/account.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { AppIconsService } from './shared/app-icons.service';
     BrowserAnimationsModule,
     AppRoutingModule,
     SharedImportsModule,
+    AccountModule,
     CustomerModule
   ],
   providers: [AppIconsService],
