@@ -29,10 +29,7 @@ import { StatusIconPipe } from './status-icon.pipe';
     SharedImportsModule
   ],
   providers: [
-    {
-      provide: CustomerService,
-      useClass: environment.production ? CustomerService : CustomerMockService
-    }
+    CustomerService
   ],
   entryComponents: [
     CustomerCreateDialogComponent

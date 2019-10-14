@@ -9,6 +9,8 @@ import { SharedImportsModule } from './shared/shared-imports.module';
 import { CustomerModule } from './customer/customer.module';
 import { AppIconsService } from './shared/app-icons.service';
 import { AccountModule } from './account/account.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './account/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,14 @@ import { AccountModule } from './account/account.module';
     AccountModule,
     CustomerModule
   ],
-  providers: [AppIconsService],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
+    AppIconsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -36,6 +36,9 @@ export class CustomerListPageComponent implements OnInit {
       width: '250px',
       data: null
     });
+    dialogRef.afterClosed().subscribe((customer: Customer) => {
+      this.customerService.save(customer);
+    });
   }
 
 }
