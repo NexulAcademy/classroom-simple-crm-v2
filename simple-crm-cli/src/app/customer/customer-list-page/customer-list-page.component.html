@@ -1,12 +1,23 @@
 <div class="content-column">
   <mat-card>
-    <mat-card-title fxLayout>
-      <span>Customers</span>
+    <mat-card-title>
+      Customers
+    </mat-card-title>
+    <div fxLayoutAlign="start baseline">
+      <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input matInput [formControl]="filterInput">
+        <button mat-button matSuffix mat-icon-button *ngIf="filterInput.value"
+          aria-label="Clear" (click)="filterInput.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-icon *ngIf="!filterInput.value" matSuffix>filter_list</mat-icon>
       <span fxFlex> </span>
       <button class="addButton" mat-mini-fab (click)="addCustomer()">
         <mat-icon aria-label="Add Customer">add</mat-icon>
       </button>
-    </mat-card-title>
+    </div>
     <table mat-table [dataSource]="customers$">
       <ng-container matColumnDef="icon">
         <th mat-header-cell *matHeaderCellDef> </th>
@@ -47,5 +58,11 @@
       <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
     </table>
+  </mat-card>
+
+  <mat-card>
+    <pre>
+      {{customers$ | async | json}}
+    </pre>
   </mat-card>
 </div>
