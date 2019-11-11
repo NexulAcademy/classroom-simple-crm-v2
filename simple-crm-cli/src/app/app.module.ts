@@ -11,6 +11,9 @@ import { AppIconsService } from './shared/app-icons.service';
 import { AccountModule } from './account/account.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './account/jwt.interceptor';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { layoutFeatureKey, layoutReducer } from './store/layout.store';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,22 @@ import { JwtInterceptor } from './account/jwt.interceptor';
     AppRoutingModule,
     SharedImportsModule,
     AccountModule,
-    CustomerModule
+    CustomerModule,
+    /**
+     * StoreModule.forRoot is imported once in the root module, accepting a reducer
+     * function or object map of reducer functions. If passed an object of
+     * reducers, combineReducers will be run creating your application
+     * meta-reducer. This returns all providers for an @ngrx/store
+     * based application.
+     */
+    StoreModule.forRoot({}), // for no global state, use an empty object,  {}.
+    StoreModule.forFeature(layoutFeatureKey, layoutReducer),
+    StoreDevtoolsModule.instrument({
+      name: 'Nexul Academy - Simple CRM',
+
+      // In a production build you would want to disable the Store Devtools
+      // logOnly: environment.production,
+    }),
   ],
   providers: [
     {
