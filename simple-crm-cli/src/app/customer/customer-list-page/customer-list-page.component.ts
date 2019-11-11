@@ -8,6 +8,10 @@ import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { combineLatest } from 'rxjs';
 import { startWith, map, debounceTime } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { CustomerState, CustomerSearchCritiera } from '../store/customer.store.model';
+import { customerSearchAction } from '../store/customer.store';
+import { selectCustomers } from '../store/customer.store.selectors';
 
 @Component({
   selector: 'crm-customer-list-page',
@@ -15,15 +19,19 @@ import { startWith, map, debounceTime } from 'rxjs/operators';
   styleUrls: ['./customer-list-page.component.scss']
 })
 export class CustomerListPageComponent implements OnInit {
-  customers$: Observable<Customer[]>;
+  allCustomers$: Observable<Customer[]>;
+  filteredCustomers$: Observable<Customer[]>;
   displayColumns = ['icon', 'name', 'phone', 'email', 'lastContactDate', 'status', 'actions'];
   filterInput = new FormControl();
 
   constructor(
     private customerService: CustomerService,
     private router: Router,
-    public dialog: MatDialog
-  ) { }
+    public dialog: MatDialog,
+    private store: Store<CustomerState>
+  ) {
+    this.allCustomers$ = this.store.pipe(select(selectCustomers));
+   }
 
   ngOnInit() {
     this.search();
@@ -36,11 +44,14 @@ export class CustomerListPageComponent implements OnInit {
   }
 
   search() {
+    const criteria: CustomerSearchCritiera = {term: ''};
+    this.store.dispatch(customerSearchAction({criteria}));
+
     const fString$: Observable<string> = this.filterInput.valueChanges.pipe(
       startWith(''),
       debounceTime(700)
     );
-    this.customers$ = combineLatest([this.customerService.search(''), fString$]).pipe(
+    this.filteredCustomers$ = combineLatest([this.allCustomers$, fString$]).pipe(
       map(([customers, fString]) => {
         return customers.filter(cust => {
           return (cust.firstName + ' ' + cust.lastName).indexOf(fString) >= 0;
@@ -55,6 +66,7 @@ export class CustomerListPageComponent implements OnInit {
       data: null
     });
     dialogRef.afterClosed().subscribe((customer: Customer) => {
+      // TODO: bonus exercise: convert this to dispatch an action
       this.customerService.save(customer).subscribe(result => {
         this.search();
       });

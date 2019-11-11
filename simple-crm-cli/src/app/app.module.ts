@@ -14,6 +14,7 @@ import { JwtInterceptor } from './account/jwt.interceptor';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { layoutFeatureKey, layoutReducer } from './store/layout.store';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { layoutFeatureKey, layoutReducer } from './store/layout.store';
       // In a production build you would want to disable the Store Devtools
       // logOnly: environment.production,
     }),
+    EffectsModule.forRoot([])
   ],
   providers: [
     {

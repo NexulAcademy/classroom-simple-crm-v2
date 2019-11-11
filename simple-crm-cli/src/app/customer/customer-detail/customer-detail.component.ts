@@ -37,6 +37,7 @@ export class CustomerDetailComponent implements OnInit {
   ngOnInit() {
     // + coerces the string route parameter to a number.  IMPORTANT!
     this.customerId = +this.route.snapshot.params.id;
+    // TODO: bonus exercise: select the customer by id from the store instead.
     this.customerService.get(this.customerId)
         .subscribe(cust => {
           this.customer = cust;
@@ -47,12 +48,15 @@ export class CustomerDetailComponent implements OnInit {
   save() {
     if (!this.detailForm.valid) { return; }
     const customer = { ...this.customer, ...this.detailForm.value };
+    // TODO: bonus exercise: convert this to dispatch an action
     this.customerService.save(customer)
       .subscribe(result => {
         if (!result) {
+          // TODO: bonus exercise: this snackbar should display from the effect
           this.snackBar.open('Error saving customer record.', 'OOPS');
           return;
         }
+        // TODO: bonus exercise: this snackbar should display from the effect
         this.snackBar.open('Customer saved', 'OK');
       });
   }
