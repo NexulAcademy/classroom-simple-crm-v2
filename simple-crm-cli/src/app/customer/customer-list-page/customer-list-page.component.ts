@@ -21,7 +21,6 @@ import { selectCustomers } from '../store/customer.store.selectors';
 export class CustomerListPageComponent implements OnInit {
   allCustomers$: Observable<Customer[]>;
   filteredCustomers$: Observable<Customer[]>;
-  displayColumns = ['icon', 'name', 'phone', 'email', 'lastContactDate', 'status', 'actions'];
   filterInput = new FormControl();
 
   constructor(
