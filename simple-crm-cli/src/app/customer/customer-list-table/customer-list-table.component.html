@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="customers">
+<table mat-table [dataSource]="customers" [trackBy]="trackByCustomerId">
   <ng-container matColumnDef="icon">
     <th mat-header-cell *matHeaderCellDef> </th>
     <td mat-cell *matCellDef="let row">

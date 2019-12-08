@@ -17,4 +17,8 @@ export class CustomerListTableComponent implements OnInit {
   ngOnInit() {
   }
 
+  trackByCustomerId(cust: Customer) {
+    return cust.customerId;
+  }
+
 }
