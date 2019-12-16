@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerListPageComponent } from './customer-list-page/customer-list-page.component';
 import { SharedImportsModule } from '../shared/shared-imports.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomerService } from './customer.service';
 import { CustomerMockService } from './customer-mock.service';
 import { environment } from 'src/environments/environment';
@@ -17,6 +17,8 @@ import { customerFeatureKey, customerReducer } from './store/customer.store';
 import { EffectsModule } from '@ngrx/effects';
 import { CustomerStoreEffects } from './store/customer.store.effects';
 import { CustomerListTableComponent } from './customer-list-table/customer-list-table.component';
+import { AccountModule } from '../account/account.module';
+import { JwtInterceptor } from '../account/jwt.interceptor';
 
 
 @NgModule({
@@ -31,8 +33,9 @@ import { CustomerListTableComponent } from './customer-list-table/customer-list-
     CommonModule,
     ReactiveFormsModule,
     HttpClientModule,
-    CustomerRoutingModule,
     SharedImportsModule,
+    AccountModule,
+    CustomerRoutingModule,
     /**
      * StoreModule.forFeature is used for composing state
      * from feature modules. These modules can be loaded
@@ -43,7 +46,12 @@ import { CustomerListTableComponent } from './customer-list-table/customer-list-
     EffectsModule.forFeature([CustomerStoreEffects])
   ],
   providers: [
-    CustomerService
+    CustomerService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
   ],
   entryComponents: [
     CustomerCreateDialogComponent
