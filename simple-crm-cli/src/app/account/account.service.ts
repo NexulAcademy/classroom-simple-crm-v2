@@ -101,10 +101,10 @@ export class AccountService {
       },
       resp => {
         console.error(resp);
+        this.snackBar.open(resp.error.message, 'Ok');
         if (navigate) {
           this.router.navigate(['not-authorized']);
         }
-        this.snackBar.open(resp.error.message, 'Ok');
       }
     );
   }
@@ -114,8 +114,8 @@ export class AccountService {
     localStorage.setItem('currentUser', JSON.stringify(data));
     if (!data.roles || data.roles.length === 0) {
       // no access?  shouldn't happen, redirect to a page not needing login
-      this.router.navigate(['/account/login']);
       this.snackBar.open('No Access', '', { duration: 3000 });
+      this.router.navigate(['not-authorized']);
     } else {
       this.snackBar.open('Login Complete', '', { duration: 3000 });
       const returnUrl = localStorage.getItem('loginReturnUrl') || '';
