@@ -25,7 +25,6 @@ export class CustomerListPageComponent implements OnInit {
 
   constructor(
     private customerService: CustomerService,
-    private router: Router,
     public dialog: MatDialog,
     private store: Store<CustomerState>
   ) {
@@ -34,12 +33,6 @@ export class CustomerListPageComponent implements OnInit {
 
   ngOnInit() {
     this.search();
-  }
-
-  openDetail(item: Customer) {
-    if (item) {
-      this.router.navigate([`./customer/${item.customerId}`]);
-    }
   }
 
   search() {
