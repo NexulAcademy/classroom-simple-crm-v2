@@ -15,10 +15,10 @@ import { UserSummary } from './account.model';
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
   constructor(
-    private platformLocation: PlatformLocation,
+    private platformLocation: PlatformLocation
   ) {}
 
-  getJwtToken(): string | null {
+  private getJwtToken(): string | null {
     const cu = localStorage.getItem('currentUser');
     let cachedUser: UserSummary;
     if (!cu) {
